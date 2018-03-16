@@ -6,7 +6,7 @@ class Display extends Component{
         return(
             <div className="display">
                 <p>
-
+                    {this.props.expression}
                 </p>
             </div>
         )
