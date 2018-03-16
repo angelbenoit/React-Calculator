@@ -1,0 +1,46 @@
+.App{
+    margin-left: 25%;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+.display{
+    background-color: #3b3b3b;
+    height: 45px;
+    width: 160px;
+    color: white;
+}
+
+.display p{
+    text-align: center;
+}
+
+.tbl{
+    width: 250px;
+}
+
+.buttonDisplay{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    cursor: default;
+}
+.buttonDisplay-equals{
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.btn{
+    flex-grow: 1;
+    background-color: #bebc92;
+    height: 40px;
+    width: 40px;
+    color: white;
+    font-size: 20px;
+}
+
+.btn:hover{
+    background-color: #868461;
+    transition-duration: .5s;
+}
