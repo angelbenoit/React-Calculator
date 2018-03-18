@@ -8,6 +8,9 @@ class Display extends Component{
                 <p>
                     {this.props.expression}
                 </p>
+                <p>
+                    {this.props.symbol}
+                </p>
             </div>
         )
     }

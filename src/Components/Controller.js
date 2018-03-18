@@ -17,15 +17,26 @@ class Controller extends Component{
             isNegative: false,
             //if user clicks on plus or minus button, expressions will be negative
 
-            decimal: false
+            decimal: false,
             //can only have one decimal per number, if user adds a decimal, it is now true
+            symbol: "",
+            pressedSymbol: false,
+            eq1: 0
         });
         this.equals = this.equals.bind(this);
         this.numInput = this.numInput.bind(this);
     }
 
     remove = () => {
-        this.setState({expression: "", isNegative: false, lastInputNumber: false, decimal: false});
+        this.setState({
+            expression: "",
+            isNegative: false,
+            lastInputNumber: false,
+            decimal: false,
+            currentSymbol: "",
+            pressedSymbol: false,
+            eq1: 0
+        });
     };
 
     plus = () => {
@@ -46,26 +57,18 @@ class Controller extends Component{
 
     equals = () => {
         let num = this.evalNum();
-        this.setState({expression: num});
+        this.setState({expression: num, pressedSymbol: false, symbol: ""});
     };
 
     sqrt = () => {
-        if(this.state.lastInputNumber === true) {
-            let num = this.evalNum();
-            num = Math.sqrt(Number(num));
+            let num = Math.sqrt(Number(this.state.expression));
             this.setState({expression: num});
-        }
     };
 
     evalNum = () => {
         let num;
-        if(this.state.lastInputNumber === false){
-            //if the last character of the string is not a number, there will be a 0 added to end
-            //ex: "5+" turns to -> "5+0", therefore it will not run an error
-            num = Math.round(eval(this.state.expression + "0"));
-        }
-        else{
-            num = Math.round(eval(this.state.expression));
+        if(this.state.pressedSymbol === true){
+            num = Math.round(eval(`${this.state.eq1.toString()} ${this.state.symbol} ${this.state.expression}`))
         }
         return num.toString();
     };
@@ -80,12 +83,14 @@ class Controller extends Component{
     };
 
     symbol = (sym) => {
-        if(this.state.lastInputNumber === true){
+        let num = this.state.expression;
+        if(!this.state.pressedSymbol){
             this.setState({
-                lastInputNumber: false,
-                expression: this.state.expression + sym,
-                decimal: false
-            });
+                expression: "",
+                eq1: Number(num),
+                symbol: sym,
+                pressedSymbol: true
+            })
         }
     };
 
@@ -121,7 +126,7 @@ class Controller extends Component{
     };
 
     numInput = (num) => {
-            this.setState({expression: this.state.expression + num, lastInputNumber: true});
+            this.setState({expression: this.state.expression + num});
     };
 
 
@@ -132,6 +137,7 @@ class Controller extends Component{
                 <Display
                     expression={this.state.expression}
                     isNegative={this.state.isNegative}
+                    symbol={this.state.symbol}
                 />
                 <ButtonDisplay
                 remove={this.remove}
