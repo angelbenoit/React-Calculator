@@ -8,7 +8,7 @@
 .display{
     background-color: #3b3b3b;
     height: 45px;
-    width: 160px;
+    width: 250px;
     color: white;
 }
 
@@ -21,14 +21,13 @@
 }
 
 .buttonDisplay{
-    display: flex;
-    flex-direction: row;
     text-align: center;
     cursor: default;
 }
-.buttonDisplay-equals{
-    flex-direction: column;
-    flex-grow: 1;
+
+.tr{
+    display: flex;
+    flex-direction: row;
 }
 
 .btn {
@@ -42,5 +41,5 @@
 
 .btn:hover{
     background-color: #868461;
-    transition-duration: .5s;
+    transition-duration: .2s;
 }

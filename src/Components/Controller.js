@@ -20,8 +20,10 @@ class Controller extends Component{
             decimal: false
             //can only have one decimal per number, if user adds a decimal, it is now true
         });
-
+        this.equals = this.equals.bind(this);
+        this.numInput = this.numInput.bind(this);
     }
+
     remove = () => {
         this.setState({expression: "", isNegative: false, lastInputNumber: false, decimal: false});
     };
@@ -38,12 +40,13 @@ class Controller extends Component{
     divide = () => {
         this.symbol("/");
     };
+    turnNeg = () => {
+        this.setState({isNegative: true});
+    };
 
     equals = () => {
-        if(this.state.lastInputNumber === true){
-            let num = this.evalNum();
-            this.setState({expression: num});
-        }
+        let num = this.evalNum();
+        this.setState({expression: num});
     };
 
     sqrt = () => {
@@ -55,7 +58,15 @@ class Controller extends Component{
     };
 
     evalNum = () => {
-        let num = Math.round(eval(this.state.expression));
+        let num;
+        if(this.state.lastInputNumber === false){
+            //if the last character of the string is not a number, there will be a 0 added to end
+            //ex: "5+" turns to -> "5+0", therefore it will not run an error
+            num = Math.round(eval(this.state.expression + "0"));
+        }
+        else{
+            num = Math.round(eval(this.state.expression));
+        }
         return num.toString();
     };
 
@@ -79,40 +90,49 @@ class Controller extends Component{
     };
 
     one = () => {
-        this.setState({expression: this.state.expression + "1", lastInputNumber: true})
+        this.numInput("1");
     };
     two = () => {
-        this.setState({expression: this.state.expression + "2", lastInputNumber: true})
+        this.numInput("2");
     };
     three = () => {
-        this.setState({expression: this.state.expression + "3", lastInputNumber: true})
+        this.numInput("3");
     };
     four = () => {
-        this.setState({expression: this.state.expression + "4", lastInputNumber: true})
+        this.numInput("4");
     };
     five = () => {
-        this.setState({expression: this.state.expression + "5", lastInputNumber: true})
+        this.numInput("5");
     };
     six = () => {
-        this.setState({expression: this.state.expression + "6", lastInputNumber: true})
+        this.numInput("6");
     };
     seven = () => {
-      this.setState({expression: this.state.expression + "7", lastInputNumber: true})
+        this.numInput("7");
     };
     eight = () => {
-        this.setState({expression: this.state.expression + "8", lastInputNumber: true})
+        this.numInput("8");
     };
     nine = () => {
-        this.setState({expression: this.state.expression + "9", lastInputNumber: true})
+        this.numInput("9");
     };
     zero = () => {
-        this.setState({expression: this.state.expression + "0", lastInputNumber: true})
+        this.numInput("0");
     };
+
+    numInput = (num) => {
+            this.setState({expression: this.state.expression + num, lastInputNumber: true});
+    };
+
+
 
     render(){
         return(
             <div>
-                <Display expression={this.state.expression}/>
+                <Display
+                    expression={this.state.expression}
+                    isNegative={this.state.isNegative}
+                />
                 <ButtonDisplay
                 remove={this.remove}
                 one={this.one}
@@ -132,6 +152,7 @@ class Controller extends Component{
                 divide={this.divide}
                 equals={this.equals}
                 sqrt={this.sqrt}
+                timesNegative={this.turnNeg}
                 />
             </div>
         )
@@ -139,3 +160,4 @@ class Controller extends Component{
 }
 
 export default Controller;
+
