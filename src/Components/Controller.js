@@ -52,12 +52,19 @@ class Controller extends Component{
         this.symbol("/");
     };
     turnNeg = () => {
-        this.setState({isNegative: true});
+        if(this.state.expression.charAt(0) !== "-"){
+            this.setState({isNegative: true, expression: "-" + this.state.expression});
+        }
+        else{
+            this.setState({isNegative: true, expression: this.state.expression.substring(1)});
+        }
     };
 
     equals = () => {
-        let num = this.evalNum();
-        this.setState({expression: num, pressedSymbol: false, symbol: ""});
+        if(this.state.pressedSymbol !== true && this.state.symbol){
+            let num = this.evalNum();
+            this.setState({expression: num, pressedSymbol: true, symbol: ""});
+        }
     };
 
     sqrt = () => {
@@ -67,8 +74,14 @@ class Controller extends Component{
 
     evalNum = () => {
         let num;
-        if(this.state.pressedSymbol === true){
-            num = Math.round(eval(`${this.state.eq1.toString()} ${this.state.symbol} ${this.state.expression}`))
+        if(this.state.pressedSymbol !== true){
+            try {
+                num = Math.round(eval(`${this.state.eq1.toString()} ${this.state.symbol} ${this.state.expression}`))
+            }
+            catch(err) {
+                console.log(`${this.state.eq1.toString()} ${this.state.symbol} ${this.state.expression}`)
+                console.log(err)
+            }
         }
         return num.toString();
     };
@@ -89,7 +102,8 @@ class Controller extends Component{
                 expression: "",
                 eq1: Number(num),
                 symbol: sym,
-                pressedSymbol: true
+                pressedSymbol: true,
+                isNegative: false
             })
         }
     };
@@ -126,7 +140,7 @@ class Controller extends Component{
     };
 
     numInput = (num) => {
-            this.setState({expression: this.state.expression + num});
+            this.setState({expression: this.state.expression + num, pressedSymbol: false});
     };
 
 
